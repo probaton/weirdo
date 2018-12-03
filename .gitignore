@@ -1,2 +1,5 @@
 my.conf.json
 creepBot/
+src/__pycache__/
+**/*.pyc
+.vscode/
