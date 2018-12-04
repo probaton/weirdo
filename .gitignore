@@ -1,5 +1,6 @@
-my.conf.json
 venv/
+my.conf.json
 src/__pycache__/
 **/*.pyc
 .vscode/
+db/
