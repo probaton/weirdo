@@ -1,6 +1,14 @@
 import json
 
-def get_token():
-    with open("my.conf.json") as f:
-        json_data = json.load(f)
-    return json_data["slack-api-token"]
+class Config():
+    def __init__(self):
+        with open("my.conf.json") as f:
+            self.config = json.load(f)
+
+    @property
+    def token(self):
+        return self.config["slack-api-token"]
+
+    @property
+    def db_path(self):
+        return self.config["db-path"]

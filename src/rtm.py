@@ -1,10 +1,10 @@
 import time
 from slackclient import SlackClient
 
-from config import get_token
+from config import Config
 from handlemessage import handle_message
 
-sc = SlackClient(get_token())
+sc = SlackClient(Config().token)
 if sc.rtm_connect():
     print('Connection established')
     while sc.server.connected is True:

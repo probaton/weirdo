@@ -1,9 +1,12 @@
 import os
-from tinydb import TinyDB, Query
+import sys
 
-db = TinyDB('./db/db.json')
-db.purge_table('quote')
-quote_db = db.table('quote')
+sys.path.append('src')
+from dbmanager import Db
+
+db = Db()
+quote_db = db.quote_table
+quote_db.purge()
 
 path = 'db/quotes/'
 quotes = []
@@ -13,5 +16,5 @@ for file_name in os.listdir(path):
         quotes.append({ 'id': count, 'quote': f.read() })
         count += 1
 
-quote_db.insert_multiple(quotes)
-print(f'{len(quote_db)} quotes added')
+quote_db.insert(quotes)
+print(f'{quote_db.length} quotes added')
