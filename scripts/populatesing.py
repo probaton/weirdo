@@ -1,6 +1,6 @@
 from tinydb import TinyDB
 
-db = TinyDB('./db/db.json')
+db = TinyDB('db/db.json')
 db.purge_table('sing')
 sing_db = db.table('sing')
 
@@ -46,4 +46,5 @@ for l in lyrics:
     lyric_array.append({ 'numerator': count, 'lyric': l })
     count += 1
 sing_db.insert_multiple(lyric_array)
+print('Song added successfully')
     
