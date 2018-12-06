@@ -1,9 +1,7 @@
 from sing import sing 
+from quotes import list_quotes
 
 def handle_message(user_id, command, input):
-    def list_quotes(user_id, input):
-        return input
-
     def invalid_cmd(user_id, input):
         return 'Invalid command'
 

@@ -33,6 +33,12 @@ class Table():
     def get(self, query):
         return self.__table.get(query)
 
+    def get_all(self):
+        return self.__table.all()
+
+    def search(self, query):
+        return self.__table.search(query)
+
     def insert(self, input):
         if isinstance(input, list):
             self.__table.insert_multiple(input)
