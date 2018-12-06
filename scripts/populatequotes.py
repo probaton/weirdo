@@ -11,9 +11,10 @@ quote_db.purge()
 path = 'db/quotes/'
 quotes = []
 count = 1
-for file_name in os.listdir(path):
-    with open(path + file_name) as f:
-        quotes.append({ 'id': count, 'quote': f.read() })
+files = sorted(list(map(lambda x: int(x), os.listdir(path))))
+for file_name in files:
+    with open(path + str(file_name)) as f:
+        quotes.append({ 'id': count, 'quote': f.read(), 'old_id': file_name })
         count += 1
 
 quote_db.insert(quotes)
