@@ -1,6 +1,22 @@
 import re
 from operator import itemgetter
 from dbmanager import Db, Query
+from random import shuffle
+
+def search_quotes(user_id, query_str):
+    query = Query().quote.search(query_str, flags=re.IGNORECASE)
+    quote_table = Db().quote_table
+
+    id_list = list(map(lambda x: x['id'], quote_table.search(query)))
+    if len(id_list) == 0:
+        return 'No matches found'
+
+    shuffle(id_list)
+
+    result = ''
+    for id in id_list[:3]:
+        result += f"{id} {quote_table.get(Query().id == id)['quote']}\n"
+    return result
 
 def list_quotes(user_id, quote_id=None):
     quote_table = Db().quote_table
