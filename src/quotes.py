@@ -3,6 +3,9 @@ from operator import itemgetter
 from dbmanager import Db, Query
 from random import shuffle
 
+def reverse_sort_by_id(list):
+    return sorted(list, key=itemgetter('id'), reverse=True)
+
 def search_quotes(user_id, query_str):
     query = Query().quote.search(query_str, flags=re.IGNORECASE)
     quote_table = Db().quote_table
@@ -19,8 +22,7 @@ def search_quotes(user_id, query_str):
     return result
 
 def list_quotes(user_id, quote_id=None):
-    quote_table = Db().quote_table
-    quotes = sorted(quote_table.get_all(), key=itemgetter('id'), reverse=True)
+    quotes = reverse_sort_by_id(Db().quote_table.get_all())
 
     quote_id = int(quote_id) if quote_id else quotes[0]['id']
     result = ''
@@ -34,3 +36,9 @@ def list_quotes(user_id, quote_id=None):
         if count == 0:
             break
     return result
+
+def add_quote(user_id, quote):
+    quote_table = Db().quote_table
+    new_id = reverse_sort_by_id(quote_table.get_all())[0]['id'] + 1
+    quote_table.insert({ 'id': new_id, 'quote': quote, 'submitter': user_id })
+    return f'Quote {new_id} added' 

@@ -14,7 +14,7 @@ count = 1
 files = sorted(list(map(lambda x: int(x), os.listdir(path))))
 for file_name in files:
     with open(path + str(file_name)) as f:
-        quotes.append({ 'id': count, 'quote': f.read(), 'old_id': file_name })
+        quotes.append({ 'id': count, 'quote': f.read(), 'old_id': file_name, 'submitter': '' })
         count += 1
 
 quote_db.insert(quotes)
