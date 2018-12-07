@@ -8,6 +8,7 @@ sc = SlackClient(Config().token)
 if sc.rtm_connect():
     print('Connection established')
     while sc.server.connected is True:
+        start = time.time()
         for item in sc.rtm_read():
             if 'type' in item and item['type'] == 'message':
                 print(item)
@@ -20,6 +21,8 @@ if sc.rtm_connect():
                     command = text.strip()
                     input = None
                 sc.rtm_send_message(channel=item['channel'], message=handle_message(item['user'], command, input))
-        time.sleep(1)
+        duration = time.time() - start
+        if duration < 1:
+            time.sleep(1-duration)
 else:
     print('Failed to establish a connection')
