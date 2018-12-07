@@ -3,6 +3,7 @@ import sys
 
 sys.path.append('src')
 from dbmanager import Db
+from quotes import int_to_id
 
 db = Db()
 quote_db = db.quote_table
@@ -14,7 +15,7 @@ count = 1
 files = sorted(list(map(lambda x: int(x), os.listdir(path))))
 for file_name in files:
     with open(path + str(file_name)) as f:
-        quotes.append({ 'id': count, 'quote': f.read(), 'old_id': file_name, 'submitter': '' })
+        quotes.append({ 'id': int_to_id(count), 'quote': f.read(), 'old_id': file_name, 'submitter': '' })
         count += 1
 
 quote_db.insert(quotes)

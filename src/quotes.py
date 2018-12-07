@@ -6,6 +6,11 @@ from random import shuffle
 def reverse_sort_by_id(list):
     return sorted(list, key=itemgetter('id'), reverse=True)
 
+def int_to_id(int):
+    strint = str(int)
+    missing_zeroes = (6-len(strint))*'0'
+    return missing_zeroes + strint
+
 def search_quotes(user_id, query_str):
     query = Query().quote.search(query_str, flags=re.IGNORECASE)
     quote_table = Db().quote_table
@@ -24,7 +29,7 @@ def search_quotes(user_id, query_str):
 def list_quotes(user_id, quote_id=None):
     quotes = reverse_sort_by_id(Db().quote_table.get_all())
 
-    quote_id = int(quote_id) if quote_id else quotes[0]['id']
+    quote_id = quote_id if quote_id else quotes[0]['id']
     result = ''
     count = -1
     for quote in quotes:
@@ -35,10 +40,11 @@ def list_quotes(user_id, quote_id=None):
             count -= 1
         if count == 0:
             break
-    return result
+    return result or 'ID not found'
 
 def add_quote(user_id, quote):
     quote_table = Db().quote_table
-    new_id = reverse_sort_by_id(quote_table.get_all())[0]['id'] + 1
+    quotes = reverse_sort_by_id(quote_table.get_all())
+    new_id = int_to_id(quotes[0]['id'] + 1)
     quote_table.insert({ 'id': new_id, 'quote': quote, 'submitter': user_id })
     return f'Quote {new_id} added' 
