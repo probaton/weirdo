@@ -10,7 +10,7 @@ if sc.rtm_connect():
     while sc.server.connected is True:
         start = time.time()
         for item in sc.rtm_read():
-            if 'type' in item and item['type'] == 'message':
+            if ('type' in item) and ('subtype' not in item) and (item['type'] == 'message'):
                 print(item)
                 text = item['text']
                 if ' ' in text:

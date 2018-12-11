@@ -45,6 +45,6 @@ def list_quotes(user_id, quote_id=None):
 def add_quote(user_id, quote):
     quote_table = Db().quote_table
     quotes = reverse_sort_by_id(quote_table.get_all())
-    new_id = int_to_id(quotes[0]['id'] + 1)
+    new_id = int_to_id(int(quotes[0]['id']) + 1)
     quote_table.insert({ 'id': new_id, 'quote': quote, 'submitter': user_id })
     return f'Quote {new_id} added' 
