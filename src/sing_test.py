@@ -1,16 +1,14 @@
-from pytest import fixture
-import os
 import sys
+from pytest import fixture
 
 from sing import sing
 
 class TestSing():
-    @fixture(scope='session', autouse=True)
+    @fixture(scope='class', autouse=True)
     def configure_db(self):
-        open('db/test-db.json', 'w+').close()
-        os.environ['DB_PATH'] = 'db/test-db.json'
         sys.path.append('scripts')
-        import populatesing 
+        from resetsong import reset_song
+        reset_song()
 
     def test_sing_plays_song_sequentially_per_user(self):
         assert sing(1) == "When you were here before"
