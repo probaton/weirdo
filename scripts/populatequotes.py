@@ -3,7 +3,7 @@ import sys
 
 sys.path.append('src')
 from dbmanager import Db
-from quotes import int_to_id
+from quotehelpers import int_to_id
 
 db = Db()
 quote_db = db.quote_table

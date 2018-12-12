@@ -1,17 +1,12 @@
 import re
-from operator import itemgetter
 from dbmanager import Db, Query
 from random import shuffle
+from quotehelpers import int_to_id, reverse_sort_by_id
 
-def reverse_sort_by_id(list):
-    return sorted(list, key=itemgetter('id'), reverse=True)
+def search_quotes(user_id, query_str=''):
+    if not query_str:
+        return 'Missing search parameter'
 
-def int_to_id(int):
-    strint = str(int)
-    missing_zeroes = (6-len(strint))*'0'
-    return missing_zeroes + strint
-
-def search_quotes(user_id, query_str):
     query = Query().quote.search(query_str, flags=re.IGNORECASE)
     quote_table = Db().quote_table
 
@@ -28,12 +23,12 @@ def search_quotes(user_id, query_str):
 
 def list_quotes(user_id, quote_id=None):
     quotes = reverse_sort_by_id(Db().quote_table.get_all())
+    start_id = quote_id or quotes[0]['id']
 
-    quote_id = quote_id if quote_id else quotes[0]['id']
     result = ''
     count = -1
     for quote in quotes:
-        if quote['id'] == quote_id:
+        if quote['id'] == start_id:
             count = 10
         if count > 0:
             result += f"{quote['id']} {quote['quote']}\n"
@@ -42,7 +37,10 @@ def list_quotes(user_id, quote_id=None):
             break
     return result or 'ID not found'
 
-def add_quote(user_id, quote):
+def add_quote(user_id, quote=''):
+    if not quote:
+        return 'Missing quote'
+
     quote_table = Db().quote_table
     quotes = reverse_sort_by_id(quote_table.get_all())
     new_id = int_to_id(int(quotes[0]['id']) + 1)
