@@ -1,9 +1,11 @@
 from tinydb import TinyDB, Query
-from config import Config
+import os
 
 class Db():
     def __init__(self):
-        self.__db = TinyDB(Config().db_path)
+        if not os.environ['DB_PATH']:
+            raise Exception('Environment variable DB_PATH not set')
+        self.__db = TinyDB(os.environ['DB_PATH'])
 
     def get_table(self, table_name):
         return Table(self.__db, table_name)
