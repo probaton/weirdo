@@ -8,7 +8,6 @@ if not os.environ['SLACK_API_TOKEN']:
     raise Exception('Environment variable SLACK_API_TOKEN not set')
 sc = SlackClient(os.environ['SLACK_API_TOKEN'])
 if sc.rtm_connect():
-    print('Connection established')
     while sc.server.connected is True:
         start = time.time()
         for item in sc.rtm_read():
