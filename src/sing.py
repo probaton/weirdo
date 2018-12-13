@@ -1,6 +1,6 @@
 from dbmanager import Db, Query
 
-def sing(user_id, input):
+def sing(user_id, ignored=None):
     db = Db()
     user_db = db.user_table
 
