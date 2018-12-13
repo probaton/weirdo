@@ -2,7 +2,7 @@ import sys
 from pytest import fixture
 
 from dbmanager import Db
-from quotes import list_quotes, search_quotes
+from quotes import list_quotes, search_quotes, add_quote
 
 @fixture(scope='class', autouse=True)
 def reset_quotes():
@@ -62,3 +62,11 @@ class TestSearchQuote():
         
     def test_search_quotes_is_not_case_sensitive(self):
         assert search_quotes(1, 'DEUX') == '000002 Quote deux\n'
+
+class TestAddQuote():
+    def test_add_quote(self):
+        assert add_quote(1, 'murple!') == 'Quote 000012 added'
+
+    def test_add_quote_without_parameter(self):
+        assert add_quote(1) == 'Missing quote'
+        assert add_quote(1, '') == 'Missing quote'
