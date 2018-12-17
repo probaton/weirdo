@@ -111,3 +111,22 @@ Output
 ```
 When you were here before
 ```
+
+# Development
+Weirdo's Slack interface can be circumvented by calling `handlemessage.py` directly from the command line. This calls `handle_message()` with the parameters provided in the call. The function takes three arguments:
+|||
+| --------- | ---------------------------------------------------------------------------- |
+| `user_id` | The Slack id of the user sending the message. |
+| `command` | The desired command as found under [Supported commands](#Supported-commands) |
+| `input` | Parameter for command call. |
+
+### Example
+```
+DB_PATH=db/db.json venv/bin/python src/handlemessage.py 1 sq bob
+```
+Output
+```
+00001 Bob said this thing.
+00005 I love to bob my head.
+00003 Sally mentioned Bob in a quote.
+```
