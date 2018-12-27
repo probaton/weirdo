@@ -4,7 +4,19 @@ from time import strftime, localtime
 
 def handle_message(user_id, command, input=None):
     def invalid_cmd(user_id, input):
-        return 'Invalid command'
+        command_list = ''
+        count = 1
+        for cmd in switcher:
+            if len(switcher) == 1:
+                command_list = cmd
+            elif count == 1 and len(switcher) == 2:
+                command_list = f'{cmd} '
+            elif count >= len(switcher):
+                command_list += f'and {cmd}'
+            else:
+                command_list += f'{cmd}, '
+            count += 1
+        return f'You lost me, sorry. I only understand {command_list}.'
 
     switcher = {
         'lq': list_quotes,

@@ -8,7 +8,7 @@ def reset_quotes():
 
 class TestHandleMessage():
     def test_handle_message_invalid_command(self):
-        assert handle_message(1, 'shurplez') == 'Invalid command'
+        assert handle_message(1, 'shurplez') == 'You lost me, sorry. I only understand lq, sq, aq, and sing.'
 
     def test_handle_message_valid_command(self):
         assert handle_message(1, 'sq', 'Quote uno') == '000001 Quote uno\n'
