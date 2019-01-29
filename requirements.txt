@@ -2,3 +2,4 @@ pylint
 tinydb
 slackclient
 pytest
+boto3

@@ -4,10 +4,11 @@ import uuid
 
 @fixture(scope='class', autouse=True)
 def db_path():
-    return f'db/test-db-{uuid.uuid4()}.json'
+    return f'test-db-{uuid.uuid4()}.json'
 
 @fixture(scope='class', autouse=True)
 def set_env_variables(db_path):
+    os.environ['WEIRDO_ENV'] = 'local'
     os.environ['DB_PATH'] = db_path
 
 @fixture(scope='class', autouse=True)
