@@ -1,14 +1,18 @@
 from tinydb import TinyDB, Query
+import boto3
 import os
 
 class Db():
     def __init__(self):
-        if not os.environ['DB_PATH']:
-            raise Exception('Environment variable DB_PATH not set')
-        self.__db = TinyDB(os.environ['DB_PATH'])
+        self.file_name = os.environ['DB_PATH']
+        if os.environ['WEIRDO_ENV'] == 'S3':
+            self.bucket = boto3.resource('s3').Bucket(os.environ['S3_BUCKET'])
+            if not os.path.isfile(self.file_name):
+                self.bucket.download_file(self.file_name, self.file_name)
+        self.db = TinyDB(self.file_name)
 
     def get_table(self, table_name):
-        return Table(self.__db, table_name)
+        return Table(self, table_name)
 
     @property
     def quote_table(self):
@@ -22,11 +26,15 @@ class Db():
     def user_table(self):
         return self.get_table('user')
 
+    def upload_to_s3(self):
+        if os.environ['WEIRDO_ENV'] == 'S3':
+            self.bucket.upload_file(self.file_name, self.file_name)
+
 class Table():
-    def __init__(self, db, table_name):
-        self.__db = db
+    def __init__(self, db_manager, table_name):
+        self.__db_manager = db_manager
         self.__table_name = table_name
-        self.__table = db.table(table_name)
+        self.__table = db_manager.db.table(table_name)
 
     @property
     def length(self):
@@ -46,9 +54,11 @@ class Table():
             self.__table.insert_multiple(input)
         else:
             self.__table.insert(input)
+        self.__db_manager.upload_to_s3()
 
     def update(self, value, query):
         self.__table.update(value, query)
+        self.__db_manager.upload_to_s3()
 
     def purge(self):
-        self.__db.purge_table(self.__table_name)
+        self.__db_manager.db.purge_table(self.__table_name)

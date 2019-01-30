@@ -1,0 +1,7 @@
+conftest.py
+src/*_test.py
+logs/
+scripts/
+venv/
+backup/
+db.json

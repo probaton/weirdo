@@ -1,0 +1,6 @@
+---
+applications:
+- name: creep
+  command: python src/__main__.py
+  buildpacks:
+    - python_buildpack
