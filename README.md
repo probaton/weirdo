@@ -1,6 +1,11 @@
 # Weirdo
-Weirdo is a Python-based Slack-bot designed to store and regurgitate quotes. Quotes are stored in JSON format and managed by TinyDB. 
+Weirdo is a Python-based Slack-bot designed to store and regurgitate quotes. Quotes are stored in JSON format and managed by TinyDB. Weirdo was designed to run in CloudFoundry and store its database in an Amazon S3 bucket. 
 
+- [Getting started](#getting-started)
+- [Configuration](#configuration)
+- [Supported commands](#supported-commands)
+- [Development](#development)
+- [Deployment](#deployment)
 
 # Getting started
 The instructions below assume you are setting up a Python virtual environment using virtualenv.
@@ -45,9 +50,20 @@ Weirdo needs to know which Slack instance it should be talking to. A Slack API t
 ## DB_PATH
 The path to the JSON database. The `db` folder is ignored by default in `.gitignore`, so `db/db.json` makes an obvious choice.
 
+## WEIRDO_ENV
+If set to 'S3', Weirdo will synchronize with the Amazon S3 bucket designated by the `S3_BUCKET`, `AWS_ACCESS_KEY_ID`, and `AWS_SECRET_ACCESS_KEY` variables described below. 
+
+## S3_BUCKET
+The name of the S3 bucket that stores the databse. Only required if `WEIRDO_ENV` is set to 'S3'.
+
+## AWS_ACCESS_KEY_ID
+Credentials for the designated S3 bucket. Only required if `WEIRDO_ENV` is set to 'S3'.
+
+## AWS_SECRET_ACCESS_KEY
+Credentials for the designated S3 bucket. Only required if `WEIRDO_ENV` is set to 'S3'.
+
 
 # Supported commands
-
 When chatting with weirdo, messages the begin with the following strings will be interpreted as commands to execute. The rest of the message will be passed as a parameter. E.g. opening a Slack channel to Weirdo and sending the message `sq cookies are awesome` will search the database for quotes containing the text "cookies are awesome". 
 
 ## sq
@@ -112,6 +128,7 @@ Output
 When you were here before
 ```
 
+
 # Development
 Weirdo's Slack interface can be circumvented by calling `handlemessage.py` directly from the command line. This calls `handle_message()` with the parameters provided in the call. The function takes three arguments:
 |||
@@ -130,3 +147,7 @@ Output
 00005 I love to bob my head.
 00003 Sally mentioned Bob in a quote.
 ```
+
+
+# Deployment
+Weirdo can be deployed to a suitable CloudFoundry container using the [`cf` command line interface](https://docs.run.pivotal.io/devguide/deploy-apps/deploy-app.html). [Log in](https://docs.cloudfoundry.org/cf-cli/getting-started.html), select a container, make sure to configure the container's environmental variables, and push. All necessary meta-data *should* be in `manifest.yml`. 
