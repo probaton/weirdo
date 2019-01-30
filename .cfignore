@@ -1,7 +1,10 @@
+db.json
+backup/
+logs/
+venv/
+.vscode/
+**/__pycache__/
+**/*.pyc
 conftest.py
 src/*_test.py
-logs/
 scripts/
-venv/
-backup/
-db.json

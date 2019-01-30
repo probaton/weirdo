@@ -1,7 +1,7 @@
-venv/
-src/__pycache__/
-**/*.pyc
-.vscode/
-logs/
-backup/
 db.json
+backup/
+logs/
+venv/
+.vscode/
+**/__pycache__/
+**/*.pyc
